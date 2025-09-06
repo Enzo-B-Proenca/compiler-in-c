@@ -47,9 +47,11 @@ token_t *lexer_parser(char *source) {
 
     if (isdigit(current)) {
       char *begin = &source[i];
-      size_t len = 0;
+      size_t len = i;
+      i++;
+      current = source[i];
 
-      while (isdigit(source[i])) {
+      while (isdigit(current)) {
         len++;
         i++;
       }
@@ -58,7 +60,6 @@ token_t *lexer_parser(char *source) {
       strncpy(lexeme, begin, len);
       lexeme[len] = '\0';
       lexer_push(NUMBER, lexeme);
-      i--;
     }
   }
 
