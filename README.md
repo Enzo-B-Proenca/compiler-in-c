@@ -85,7 +85,7 @@ numero | \<digito>  (\<digito>)*
 **Expressões**|
 var | \<ID>
 exp.simples | [+\|-\|e] \<termo> ( [+\|-\|e] \<termo>)* 
-fator | \<var> \| \<numero> \| \<bool> \| (\<exp.simples>)
+fator | \<var> \| \<numero> \| \<bool> \| **(**\<exp.simples>**)**
 termo | \<fator> ([* \| div] \<fator>)*
 relacao | = \| <> \| < \| <= \| >= \| >
 exp | \<exp.simples>[\<relacao>\<exp.simples>\|e]
@@ -111,7 +111,6 @@ bloco | [\<secao-declaracao_vars>\|e]   [\<secao_declaracao_funcoes>\|e] \<coman
 programa | **program** \<ID> **;** \<bloco>**.**
 
 ## Token -> Gramática Livre de Contexto (GLC)
-Nesse primeiro momento, vou inserir só os mais complexos. Sendo assim, os que são iguais ao regex, deixarei para colocar depois.
 
 Auxliares:
 - \<A>(letras) -> \<letra>\<A> \| e 
@@ -128,16 +127,39 @@ Auxliares:
 
 token | GLC
 | - | - |
+**Números e identificadores**
+letra | \<letra> -> (a-z \| A-z \| _ )
+digito | \<digito> -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+bool | \<bool> -> true\|false
 ID | \<ID> -> \<letra>\<An>
 numero | <numero> -> \<digito>\<D>
+**Expressões**|
+var | \<var> -> \<ID>
+relacao | \<relacao> -> = \| <> \| < \| <= \| >= \| >
+fator |\<fator> -> \<var> \| \<numero> \| \<bool> \| **(**\<exp.simples>**)**
 termo | \<termo> -> \<fator> \<Md>
 exp.simples | \<exp.simples> -> \<S>\<termo>\<exp.simples> \| e
 exp | \<exp> -> \<exp.simples> \<B>
+**Comandos**
+loop | \<loop> -> **while** **(**\<exp>**)** **do** \<comando>
+if | \<if> -> **if** **(**\<exp>**)** **then** \<comando> [**else** \<comando> \| e]
+atribuicao | \<atrbuicao> -> \<var> **:=** \<exp>
+comando_composto | \<comando_composto> -> **begin** \<comando> ( **;**\<comando> )* **end**
+funcao | \<funcao> -> \<ID> **(**\<args_funcao>**)**
+comando | \<comando> -> \<atribuicao> \| \<funcao> \| \<comando_composto>  \| \<if> \| \<loop> \| **write(**\<ID>**)**
 args_funcao | \<args_funcao> -> **(**\<ID>\|\<numero>\|\<bool>**)**\<Args>
+**Declarações**
+tipo | \<tipo> -> **integer** \| **boolean**
 lista_IDs | \<lista_IDs> -> \<ID>\<IDs>
+declaracao_vars | \<declaracao_vars> -> \<lista_IDs> **:** \<tipo>
 secao_declaracao_vars | \<secao_declaracao_vars> -> **var** \<declaracao_vars>\<Vars>
+declaracao_funcao | \<declaracao_funcao> -> **procedure** \<ID> [\<params_funcao>\|e] **;** \<bloco>
 secao_declaracao_funcoes | \<secao_declaracao_funcoes> -> \<declaracao>**;**\<secao_declaracao_funcoes> \| e
+secao_params_funcao | \<secao_params_funcao> -> [**var**\|e] \<lista_IDs> **:** \<tipo>
 params_funcao | \<params_funcao> -> **(**\<secao_declaracao_funcoes>\<Params>**)**
+**Principais**
+bloco | \<bloco> -> [\<secao-declaracao_vars>\|e] [\<secao_declaracao_funcoes>\|e] \<comando_composto>
+programa | \<programa> -> **program** \<ID> **;** \<bloco>**.**
 
 
 
