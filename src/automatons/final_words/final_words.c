@@ -284,7 +284,26 @@ token_t* evaluate_final_word(char *word)
         }
     }
 
-    if(state == 7){
+    //estados finais
+    if(state == 16
+    || state == 21
+    || state == 24
+    || state == 30
+    || state == 33
+    || state == 35
+    || state == 38
+    || state == 42
+    || state == 51
+    || state == 52
+    || state == 54
+    || state == 56
+    || state == 60
+    || state == 61
+    || state == 66
+    || state == 67
+    || state == 69 
+    || state == 71){
+
         char* lexeme = word;
         token_t* t = (token_t*)malloc(sizeof(token_t));
         t->lexeme = &lexeme;
